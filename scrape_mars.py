@@ -1,3 +1,4 @@
+#import dependencies
 from splinter import Browser
 from bs4 import BeautifulSoup
 from webdriver_manager.chrome import ChromeDriverManager
@@ -5,21 +6,23 @@ import pandas as pd
 import time
 
 def scrape():
-    # Set up Splinter
+    # Splinter
     executable_path = {'executable_path': ChromeDriverManager().install()}
     browser = Browser('chrome', **executable_path, headless=False)
 
-    # Create a dictionary to hold everything pulled from all the sites
+    # create dictionary for scraped data
     scraped_data = {}
 
-    # NASA Mars News
+    # nasa new from redplanetscience.com
     url = "https://redplanetscience.com/"
     browser.visit(url)
     time.sleep(1)
     html = browser.html
     soup = BeautifulSoup(html, "html.parser")
+    
     news_title = soup.find('div', class_='content_title').getText()
     news_p = soup.find('div',class_='article_teaser_body').getText()
+    
     scraped_data['news_title'] = news_title
     scraped_data['news_p'] = news_p
 
@@ -29,6 +32,7 @@ def scrape():
     browser.links.find_by_partial_text('FULL IMAGE').click()
     html = browser.html
     soup = BeautifulSoup(html, 'html.parser')
+    
     featured_image = soup.find('img', class_='fancybox-image')
     image_path = featured_image['src']
     featured_image_URL = url + image_path
@@ -55,6 +59,8 @@ def scrape():
     image_links = soup.find_all('div', class_='item')
 
     link_list=[]
+    
+    #append the href to url
     for link in image_links:
         a = link.find('a')
         href=a['href']

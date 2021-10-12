@@ -1,3 +1,4 @@
+#Import dependencies
 from flask import Flask, render_template, redirect
 from flask_pymongo import PyMongo
 import scrape_mars
@@ -12,7 +13,7 @@ conn = 'mongodb://localhost:27017'
 # Pass connection to the pymongo instance.
 client = pymongo.MongoClient(conn)
 
-#delete if db already exists 
+#delete the existing database
 client.drop_database("mars_db")
 
 # Connect to a database. Will create one if not already available.
